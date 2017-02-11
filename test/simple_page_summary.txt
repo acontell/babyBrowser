@@ -1,7 +1,5 @@
-[1;31mResults: [0m
-[1;36mUppercase: [0m0
-[1;36mLowercase: [0m543271
-[1;36mLines: [0m64130
-[1;36mWords: [0m64154
-[1;36mCharacters: [0m607454
-
+Is it well-formed? YES
+Number of opening tags: 5
+Number of closing tags: 5
+Number of paragraphs: 3
+Paragraph's content: this is a paragraph, this is another paragraph, this is the last paragraph

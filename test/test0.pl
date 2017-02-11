@@ -5,8 +5,8 @@ use warnings;
 use File::Basename;
 my $test_path = dirname(__FILE__);
 
-system( "cat $test_path/wordlist.txt | ./dp_browser > temp.txt" );
-my $diff = `diff temp.txt $test_path/wordlist_out.txt`;
+system( "cat $test_path/simple_page.html | ./dp_browser > temp.txt" );
+my $diff = `diff temp.txt $test_path/simple_page_summary.txt`;
 chomp( $diff );
 if( $diff )
 {
