@@ -41,11 +41,10 @@
 %define parse.assert
 
 %token               END    0     "end of file"
-%token               UPPER
-%token               LOWER
-%token <std::string> WORD
+%token               TAG_START
+%token               TAG_END
+%token <std::string> SENTENCE
 %token               NEWLINE
-%token               CHAR
 
 %locations
 
@@ -59,11 +58,10 @@ list
   ;
 
 item
-  : UPPER   { driver.add_upper(); }
-  | LOWER   { driver.add_lower(); }
-  | WORD    { driver.add_word( $1 ); }
-  | NEWLINE { driver.add_newline(); }
-  | CHAR    { driver.add_char(); }
+  : TAG_START   { driver.addStartTag(); }
+  | TAG_END     { driver.addEndTag(); }
+  | SENTENCE    { driver.addSentence($1); }
+  | NEWLINE     { driver.addNewline(); }
   ;
 
 %%

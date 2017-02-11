@@ -13,87 +13,48 @@ DP::Handler::~Handler() {
 
 void
 DP::Handler::parse(std::istream &stream) {
-    if (!stream.good() && stream.eof()) {
-        return;
-    }
-    //else
-    parse_helper(stream);
+    parseHelper(stream);
     return;
 }
 
 void
-DP::Handler::parse_helper(std::istream &stream) {
-
+DP::Handler::parseHelper(std::istream &stream) {
     delete(scanner);
-    try {
-        scanner = new DP::Scanner(&stream);
-    } catch (std::bad_alloc &ba) {
-        std::cerr << "Failed to allocate scanner: (" <<
-                ba.what() << "), exiting!!\n";
-        exit(EXIT_FAILURE);
-    }
-
+    scanner = new DP::Scanner(&stream);
     delete(parser);
-    try {
-        parser = new DP::Parser((*scanner) /* scanner */,
-                (*this) /* driver */);
-    } catch (std::bad_alloc &ba) {
-        std::cerr << "Failed to allocate parser: (" <<
-                ba.what() << "), exiting!!\n";
-        exit(EXIT_FAILURE);
-    }
-    const int accept(0);
-    if (parser->parse() != accept) {
-        std::cerr << "Parse failed!!\n";
-    }
+    parser = new DP::Parser((*scanner), (*this));
+    parser->parse();
     return;
 }
 
 void
-DP::Handler::add_upper() {
-    uppercase++;
-    chars++;
-    words++;
+DP::Handler::addStartTag() {
+    startTags++;
 }
 
 void
-DP::Handler::add_lower() {
-    lowercase++;
-    chars++;
-    words++;
+DP::Handler::addEndTag() {
+    endTags++;
 }
 
 void
-DP::Handler::add_word(const std::string &word) {
-    words++;
-    chars += word.length();
-    for (const char &c : word) {
-        if (islower(c)) {
-            lowercase++;
-        } else if (isupper(c)) {
-            uppercase++;
-        }
-    }
+DP::Handler::addSentence(const std::string &word) {
+    paragraphs += word;
+    nParagraphs++;
 }
 
 void
-DP::Handler::add_newline() {
+DP::Handler::addNewline() {
     lines++;
-    chars++;
-}
-
-void
-DP::Handler::add_char() {
-    chars++;
 }
 
 std::ostream&
 DP::Handler::print(std::ostream &stream) {
-    stream << red << "Results: " << norm << "\n";
-    stream << blue << "Uppercase: " << norm << uppercase << "\n";
-    stream << blue << "Lowercase: " << norm << lowercase << "\n";
-    stream << blue << "Lines: " << norm << lines << "\n";
-    stream << blue << "Words: " << norm << words << "\n";
-    stream << blue << "Characters: " << norm << chars << "\n";
+    stream << "Is it well-formed? " << ((startTags - endTags) == 0 ? "YES" : "NO") << "\n";
+    stream << "Number of opening tags: " << startTags << "\n";
+    stream << "Number of closing tags: " << endTags << "\n";
+    stream << "Number of paragraphs: " << nParagraphs << "\n";
+    stream << "Number of lines: " << lines << "\n";
+    stream << "Ps content: " << paragraphs;
     return (stream);
 }

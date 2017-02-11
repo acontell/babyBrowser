@@ -32,15 +32,17 @@ using token = DP::Parser::token;
             yylval = lval;
 %}
 
-[a-z]       {
-               return( token::LOWER );
+"<"[a-zA-Z]+">" {
+               return(token::TAG_START);
             }
 
-[A-Z]       {
-               return( token::UPPER );
-            }
+"</"[a-zA-Z]+">" {
+               return(token::TAG_END);
+             }
 
-[a-zA-Z]+   {
+[ \t]+
+
+[a-zA-Z ]+  {
                /**
                 * Section 10.1.5.1 of the 3.0.2 Bison Manual says the 
                 * following should work:
@@ -48,19 +50,18 @@ using token = DP::Parser::token;
                 * but it doesn't.
                 * ref: http://goo.gl/KLn0w2
                 */
-               yylval->build< std::string >( yytext );
-               return( token::WORD );
+               yylval->build<std::string>(yytext);
+               return(token::SENTENCE);
             }
 
 \n          {
                // Update line number
                loc->lines();
-               return( token::NEWLINE );
+               return(token::NEWLINE);
             }
 
-.           {
-               return( token::CHAR );
-            }
+.
+        
 %%
 
 

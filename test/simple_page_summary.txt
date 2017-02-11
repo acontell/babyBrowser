@@ -2,4 +2,5 @@ Is it well-formed? YES
 Number of opening tags: 5
 Number of closing tags: 5
 Number of paragraphs: 3
-Paragraph's content: this is a paragraph, this is another paragraph, this is the last paragraph
+Number of lines: 7
+Ps content: This is a paragraphThis is another paragraphThis is the last paragraph
