@@ -1,5 +1,5 @@
-#ifndef __MCDRIVER_HPP__
-#define __MCDRIVER_HPP__ 1
+#ifndef __DPHANDLER_HPP__
+#define __DPHANDLER_HPP__ 1
 
 #include <string>
 #include <cstddef>
@@ -7,6 +7,8 @@
 
 #include "scanner.hpp"
 #include "parser.tab.hh"
+#include "node.hpp"
+#include <vector>
 
 namespace DP {
 
@@ -19,14 +21,15 @@ namespace DP {
         void addEndTag(const std::string &word);
         void addSentence(const std::string &word);
         void addNewline();
+        std::vector<Node> getNodes();
         std::ostream& print(std::ostream &stream);
     private:
         void parseHelper(std::istream &stream);
-        std::size_t startTags = 0;
+        std::string nodesToString();
+        std::size_t nodeIdx = 0;
         std::size_t endTags = 0;
-        std::size_t nParagraphs = 0;
         std::size_t lines = 0;
-        std::string paragraphs = "";
+        std::vector<Node> nodes;
         DP::Parser *parser = nullptr;
         DP::Scanner *scanner = nullptr;
     };

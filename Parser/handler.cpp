@@ -29,8 +29,8 @@ DP::Handler::parseHelper(std::istream &stream) {
 
 void
 DP::Handler::addStartTag(const std::string &word) {
-    std::cout << word;
-    startTags++;
+    nodeIdx++;
+    nodes.emplace_back(word);
 }
 
 void
@@ -40,8 +40,7 @@ DP::Handler::addEndTag(const std::string &word) {
 
 void
 DP::Handler::addSentence(const std::string &word) {
-    paragraphs += word;
-    nParagraphs++;
+    nodes.at(nodeIdx - 1).content = word;
 }
 
 void
@@ -49,13 +48,26 @@ DP::Handler::addNewline() {
     lines++;
 }
 
+std::vector<Node>
+DP::Handler::getNodes() {
+    return nodes;
+}
+
+std::string 
+DP::Handler::nodesToString() {
+    std::string aux = "";
+    for (unsigned i = 0; i < nodes.size(); i++) {
+        aux += nodes.at(i).tag + " " + nodes.at(i).content + "\n";
+    }
+    return aux;
+}
+
 std::ostream&
 DP::Handler::print(std::ostream &stream) {
-    stream << "Is it well-formed? " << ((startTags - endTags) == 0 ? "YES" : "NO") << "\n";
-    stream << "Number of opening tags: " << startTags << "\n";
+    stream << "Number of opening tags: " << nodeIdx << "\n";
     stream << "Number of closing tags: " << endTags << "\n";
-    stream << "Number of paragraphs: " << nParagraphs << "\n";
     stream << "Number of lines: " << lines << "\n";
-    stream << "Ps content: " << paragraphs;
+    stream << "Tags and content: " << "\n";
+    stream << DP::Handler::nodesToString();
     return (stream);
 }

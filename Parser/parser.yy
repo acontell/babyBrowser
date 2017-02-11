@@ -55,7 +55,7 @@ html_option : END | list END;
 
 list : tag | list tag;
 
-tag: TAG_BEGIN_START SENTENCE TAG_END        { driver.addStartTag($2); }
+tag: TAG_BEGIN_START SENTENCE TAG_END         { driver.addStartTag($2); }
   | TAG_END_START SENTENCE TAG_END            { driver.addEndTag($2); }
   | SENTENCE                                  { driver.addSentence($1); }
   | NEWLINE                                   { driver.addNewline(); }
