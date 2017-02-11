@@ -41,8 +41,9 @@
 %define parse.assert
 
 %token               END    0     "end of file"
-%token               TAG_START
+%token               TAG_BEGIN_START
 %token               TAG_END
+%token               TAG_END_START
 %token <std::string> SENTENCE
 %token               NEWLINE
 
@@ -50,18 +51,14 @@
 
 %%
 
-list_option : END | list END;
+html_option : END | list END;
 
-list
-  : item
-  | list item
-  ;
+list : tag | list tag;
 
-item
-  : TAG_START   { driver.addStartTag(); }
-  | TAG_END     { driver.addEndTag(); }
-  | SENTENCE    { driver.addSentence($1); }
-  | NEWLINE     { driver.addNewline(); }
+tag: TAG_BEGIN_START SENTENCE TAG_END        { driver.addStartTag($2); }
+  | TAG_END_START SENTENCE TAG_END            { driver.addEndTag($2); }
+  | SENTENCE                                  { driver.addSentence($1); }
+  | NEWLINE                                   { driver.addNewline(); }
   ;
 
 %%

@@ -28,12 +28,13 @@ DP::Handler::parseHelper(std::istream &stream) {
 }
 
 void
-DP::Handler::addStartTag() {
+DP::Handler::addStartTag(const std::string &word) {
+    std::cout << word;
     startTags++;
 }
 
 void
-DP::Handler::addEndTag() {
+DP::Handler::addEndTag(const std::string &word) {
     endTags++;
 }
 

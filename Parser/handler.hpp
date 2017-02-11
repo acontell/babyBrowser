@@ -15,8 +15,8 @@ namespace DP {
         Handler() = default;
         virtual ~Handler();
         void parse(std::istream &iss);
-        void addStartTag();
-        void addEndTag();
+        void addStartTag(const std::string &word);
+        void addEndTag(const std::string &word);
         void addSentence(const std::string &word);
         void addNewline();
         std::ostream& print(std::ostream &stream);
