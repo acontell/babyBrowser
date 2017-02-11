@@ -11,7 +11,7 @@ CXXSTD = -std=c++14
 CFLAGS = -Wno-deprecated-register -O0  $(CDEBUG) $(CSTD) 
 CXXFLAGS = -Wno-deprecated-register -O0  $(CXXDEBUG) $(CXXSTD)
 
-CPPOBJ = mc_driver
+CPPOBJ = handler
 SOBJ =  parser lexer
 
 FILES = $(addsuffix .cpp, $(CPPOBJ))
@@ -19,10 +19,10 @@ FILES = $(addsuffix .cpp, $(CPPOBJ))
 OBJS  = $(addsuffix .o, $(CPPOBJ))
 
 CLEANLIST =  $(addsuffix .o, $(OBJ)) $(OBJS) \
-				 mc_parser.tab.cc mc_parser.tab.hh \
+				 parser.tab.cc parser.tab.hh \
 				 location.hh position.hh \
-			    stack.hh mc_parser.output parser.o \
-				 lexer.o mc_lexer.yy.cc
+			    stack.hh parser.output parser.o \
+				 lexer.o lexer.yy.cc
 
 .PHONY: all
 all: wc
@@ -31,13 +31,13 @@ wc: $(FILES)
 	$(MAKE) $(SOBJ)
 	$(MAKE) $(OBJS)
 
-parser: mc_parser.yy
-	bison -d -v mc_parser.yy
-	$(CXX) $(CXXFLAGS) -c -o parser.o mc_parser.tab.cc
+parser: parser.yy
+	bison -d -v parser.yy
+	$(CXX) $(CXXFLAGS) -c -o parser.o parser.tab.cc
 
-lexer: mc_lexer.l
-	flex --outfile=mc_lexer.yy.cc  $<
-	$(CXX)  $(CXXFLAGS) -c mc_lexer.yy.cc -o lexer.o
+lexer: lexer.l
+	flex --outfile=lexer.yy.cc  $<
+	$(CXX)  $(CXXFLAGS) -c lexer.yy.cc -o lexer.o
 
 .PHONY: clean
 clean:

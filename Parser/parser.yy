@@ -2,13 +2,13 @@
 %require  "3.0"
 %debug 
 %defines 
-%define api.namespace {MC}
-%define parser_class_name {MC_Parser}
+%define api.namespace {DP}
+%define parser_class_name {Parser}
 
 %code requires{
-   namespace MC {
-      class MC_Driver;
-      class MC_Scanner;
+   namespace DP {
+      class Handler;
+      class Scanner;
    }
 
 // The following definitions is missing when %locations isn't used
@@ -22,8 +22,8 @@
 
 }
 
-%parse-param { MC_Scanner  &scanner  }
-%parse-param { MC_Driver  &driver  }
+%parse-param { Scanner  &scanner  }
+%parse-param { Handler  &driver  }
 
 %code{
    #include <iostream>
@@ -31,7 +31,7 @@
    #include <fstream>
    
    /* include for all driver functions */
-   #include "mc_driver.hpp"
+   #include "handler.hpp"
 
 #undef yylex
 #define yylex scanner.yylex
@@ -70,7 +70,7 @@ item
 
 
 void 
-MC::MC_Parser::error( const location_type &l, const std::string &err_message )
+DP::Parser::error( const location_type &l, const std::string &err_message )
 {
    std::cerr << "Error: " << err_message << " at " << l << "\n";
 }
