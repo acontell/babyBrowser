@@ -2,7 +2,7 @@
 #include <cstdlib>
 #include <cstring>
 
-#include "mc_driver.hpp"
+#include "Parser/mc_driver.hpp"
 
 // Usage: pipe file with html to the executable file. cat myHtml | dp_browser
 int

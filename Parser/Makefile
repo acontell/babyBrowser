@@ -1,8 +1,6 @@
 CC    ?= clang
 CXX   ?= clang++
 
-EXE = dp_browser
-
 CDEBUG = -g -Wall
 
 CXXDEBUG = -g -Wall
@@ -13,8 +11,7 @@ CXXSTD = -std=c++14
 CFLAGS = -Wno-deprecated-register -O0  $(CDEBUG) $(CSTD) 
 CXXFLAGS = -Wno-deprecated-register -O0  $(CXXDEBUG) $(CXXSTD)
 
-
-CPPOBJ = main mc_driver
+CPPOBJ = mc_driver
 SOBJ =  parser lexer
 
 FILES = $(addsuffix .cpp, $(CPPOBJ))
@@ -25,7 +22,7 @@ CLEANLIST =  $(addsuffix .o, $(OBJ)) $(OBJS) \
 				 mc_parser.tab.cc mc_parser.tab.hh \
 				 location.hh position.hh \
 			    stack.hh mc_parser.output parser.o \
-				 lexer.o mc_lexer.yy.cc $(EXE)\
+				 lexer.o mc_lexer.yy.cc
 
 .PHONY: all
 all: wc
@@ -33,8 +30,6 @@ all: wc
 wc: $(FILES)
 	$(MAKE) $(SOBJ)
 	$(MAKE) $(OBJS)
-	$(CXX) $(CXXFLAGS) -o $(EXE) $(OBJS) parser.o lexer.o $(LIBS)
-
 
 parser: mc_parser.yy
 	bison -d -v mc_parser.yy
@@ -43,10 +38,6 @@ parser: mc_parser.yy
 lexer: mc_lexer.l
 	flex --outfile=mc_lexer.yy.cc  $<
 	$(CXX)  $(CXXFLAGS) -c mc_lexer.yy.cc -o lexer.o
-
-.PHONY: test
-test:
-	test/test0.pl
 
 .PHONY: clean
 clean:
